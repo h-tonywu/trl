@@ -54,6 +54,7 @@ python trl/scripts/dpo.py \
 """
 
 import argparse
+from pathlib import Path
 
 import torch
 from datasets import load_dataset
@@ -72,7 +73,11 @@ from trl import (
 from trl.trainer.utils import SIMPLE_CHAT_TEMPLATE
 
 
-def main(script_args, training_args, model_args):
+def main(script_args, training_args: DPOConfig, model_args):
+    # Set DeepSpeed config
+    deepspeed_config_path = Path("trl/scripts/deespeed_zero_3.json")
+    training_args.deepspeed = str(deepspeed_config_path)
+
     ################
     # Model & Tokenizer
     ###################
